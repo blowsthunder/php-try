@@ -1,0 +1,39 @@
+version: '3'
+services:
+  php-web:
+    build: ./front-end
+    ports:
+      - 6060:80
+      - 433:433
+    volumes:
+      - ./front-end:/var/www/html/
+    deploy:
+      replicas: 5 
+    
+  db:
+    image: mysql
+    environment:
+      - MYSQL_DATABASE=appData
+      - MYSQL_USER=Yasser
+      - MYSQL_PASSWORD=azerty
+      - MYSQL_ALLOW_EMPTY_PASSWORD=1
+    volumes:
+      - ./back-end:/docker-entrypoint-initdb.d
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8081:80
+    environment:
+      - PMA_PORT=3306
+      - PMA_HOST=db
+    
+    
+    
+
+
