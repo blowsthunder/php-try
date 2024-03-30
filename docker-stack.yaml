@@ -1,14 +1,17 @@
 version: '3'
 services:
   php-web:
-    image : php_with_pdo
+    image : caproni/yasser_ramadan
     ports:
       - 6060:80
       - 433:433
     volumes:
       - ./front-end:/var/www/html/
     deploy:
-      replicas: 5 
+      replicas: 5
+      placement:
+        constraints:
+          - node.role == worker
     
   db:
     image: mysql
